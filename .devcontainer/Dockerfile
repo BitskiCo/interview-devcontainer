@@ -1,5 +1,8 @@
 FROM mcr.microsoft.com/devcontainers/universal:2-linux
 
+WORKDIR /data
+COPY data/* .
+
 # Install Kafka
 ARG KAFKA_VERSION=2.13-3.3.1
 ADD https://downloads.apache.org/kafka/3.3.1/kafka_$KAFKA_VERSION.tgz .
