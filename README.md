@@ -6,7 +6,9 @@ This repo is configured with a [devcontainer][]. To use the devcontainer, instal
 the [VSCode Remote extension pack][vscode-remote] and follow the instructions or
 open GitHub Codespaces from [GitHub.com][github].
 
-## Services
+## Container Services
+
+The devcontainer is configured with the following services.
 
 | Service                    | Env var / URL                                            |
 | -------------------------- | -------------------------------------------------------- |
@@ -15,7 +17,12 @@ open GitHub Codespaces from [GitHub.com][github].
 | [Kafka][kafka]             | `KAFKA_BOOTSTRAP_SERVER=kafka:9092`                      |
 | [Zookeeper][zookeeper]     | `zookeeper:2181`                                         |
 
+## Sample Datasets
+
+Sample data is available under [`data/`](data/README.md). Additional datasets may be downloaded from the [Azure Databricks sample datasets][databricks-data] page.
+
 [cockroachdb]: https://www.cockroachlabs.com
+[databricks-data]: https://learn.microsoft.com/en-us/azure/databricks/dbfs/databricks-datasets
 [devcontainer]: https://containers.dev
 [github]: https://github.com
 [kafka-ui]: https://github.com/provectus/kafka-ui
