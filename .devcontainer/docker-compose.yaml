@@ -1,0 +1,82 @@
+version: "3"
+services:
+  cockroach:
+    image: ghcr.io/bitskico/cockroachdb-insecure:v22.1.10
+
+  zookeeper:
+    image: ubuntu/zookeeper
+    ports:
+      - 2181:2181
+    healthcheck:
+      test: zookeeper-shell.sh zookeeper:2181 stat /
+      start_period: 2s
+      interval: 2s
+      timeout: 10s
+      retries: 15
+
+  kafka:
+    image: ubuntu/kafka
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    ports:
+      - 9092:9092
+      - 9997:9997
+    healthcheck:
+      test: >-
+        /usr/bin/env -u JMX_PORT
+        kafka-broker-api-versions.sh --bootstrap-server kafka:9092
+      start_period: 10s
+      interval: 5s
+      timeout: 60s
+      retries: 10
+    environment:
+      ZOOKEEPER_HOST: zookeeper
+      ZOOKEEPER_PORT: "2181"
+      JMX_PORT: "9997"
+      KAFKA_JMX_OPTS: >-
+        -Dcom.sun.management.jmxremote
+        -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.rmi.port=9997
+        -Dcom.sun.management.jmxremote.ssl=false
+        -Djava.rmi.server.hostname=kafka
+    command:
+      - /etc/kafka/server.properties
+      - --override
+      - auto.create.topics.enable=true
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    depends_on:
+      kafka:
+        condition: service_healthy
+    ports:
+      - 34197:8080
+    healthcheck:
+      test: wget -nv -t1 --spider http://kafka-ui:8080/actuator/health
+      start_period: 2s
+      interval: 2s
+      timeout: 10s
+      retries: 15
+    environment:
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+      KAFKA_CLUSTERS_0_JMXPORT: "9997"
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+
+  interview-devcontainer:
+    build: .
+    depends_on:
+      cockroach:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+      kafka-ui:
+        condition: service_healthy
+    environment:
+      CARGO_TARGET_DIR: /tmp/cargo-target
+      DATABASE_URL: postgres://root@cockroach:26257/defaultdb
+      KAFKA_BOOTSTRAP_SERVER: kafka:9092
+    volumes:
+      - ..:/workspaces/interview-devcontainer
+    command: sleep infinity

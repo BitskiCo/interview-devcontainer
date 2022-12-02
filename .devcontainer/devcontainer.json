@@ -1,0 +1,48 @@
+{
+  "name": "Interview Devcontainer",
+
+  "dockerComposeFile": "docker-compose.yaml",
+  "service": "interview-devcontainer",
+  "workspaceFolder": "/workspaces/interview-devcontainer",
+  "postStartCommand": "devcontainer-init.sh",
+
+  "features": {
+    "ghcr.io/devcontainers/features/anaconda:1": {},
+    "ghcr.io/devcontainers/features/aws-cli:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/git-lfs:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/go:1": {},
+    "ghcr.io/devcontainers/features/java:1": {},
+    "ghcr.io/devcontainers/features/node:1": {},
+    "ghcr.io/devcontainers/features/terraform:1": {}
+  },
+
+  "settings": {
+    "files.watcherExclude": {
+      "**/target/**": true
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "golang.Go",
+        "GraphQL.vscode-graphql-syntax",
+        "hashicorp.terraform",
+        "mikestead.dotenv",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "ms-python.python",
+        "ms-toolsai.jupyter-renderers",
+        "ms-vscode.makefile-tools",
+        "redhat.vscode-openshift-extension-pack",
+        "redhat.vscode-yaml",
+        "rust-lang.rust-analyzer",
+        "serayuzgur.crates",
+        "tamasfe.even-better-toml"
+      ]
+    }
+  },
+
+  "forwardPorts": [34197]
+}
