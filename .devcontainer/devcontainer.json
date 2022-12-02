@@ -33,6 +33,7 @@
         "ms-python.python",
         "ms-toolsai.jupyter-renderers",
         "ms-vscode.makefile-tools",
+        "mtxr.sqltools",
         "redhat.vscode-openshift-extension-pack",
         "redhat.vscode-yaml",
         "rust-lang.rust-analyzer",
