@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/rust:1-bullseye
+FROM mcr.microsoft.com/devcontainers/universal:2-linux
 
 # Install Kafka
 ARG KAFKA_VERSION=2.13-3.3.1
