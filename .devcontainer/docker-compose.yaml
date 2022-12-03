@@ -2,6 +2,8 @@ version: "3"
 services:
   cockroach:
     image: ghcr.io/bitskico/cockroachdb-insecure:v22.1.11
+    volumes:
+      - cockroach:/cockroach/cockroach-data
 
   zookeeper:
     image: ubuntu/zookeeper
@@ -64,15 +66,19 @@ services:
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
 
+  localstack:
+    image: localstack/localstack
+    ports:
+      - 127.0.0.1:4566:4566            # LocalStack Gateway
+      - 127.0.0.1:4510-4559:4510-4559  # external services port range
+    environment:
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - localstack:/var/lib/localstack
+      - /var/run/docker.sock:/var/run/docker.sock
+
   interview-devcontainer:
     build: .
-    depends_on:
-      cockroach:
-        condition: service_healthy
-      kafka:
-        condition: service_healthy
-      kafka-ui:
-        condition: service_healthy
     environment:
       CARGO_TARGET_DIR: /tmp/cargo-target
       COCKROACH_INSECURE: "true"
@@ -82,3 +88,7 @@ services:
     volumes:
       - ..:/workspaces/interview-devcontainer
     command: sleep infinity
+
+volumes:
+  cockroach:
+  localstack:
