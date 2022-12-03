@@ -36,7 +36,3 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=private \
 
 # Install init scripts
 ADD *.sh /usr/local/bin/
-
-# Install cargo bins
-COPY --from=ghcr.io/bitskico/rust-sdk /usr/local/rust-sdk /usr/local/
-ENV PATH=/usr/local/rust-sdk/bin:$PATH
