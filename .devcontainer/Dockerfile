@@ -1,5 +1,12 @@
 FROM mcr.microsoft.com/devcontainers/universal:2-linux
 
+# Install CockroachDB
+ADD --link https://binaries.cockroachdb.com/cockroach-v22.1.11.linux-amd64.tgz /tmp/
+RUN cd /tmp && \
+    tar -xz cockroach-v22.1.11.linux-amd64.tgz && \
+    sudo cp -i cockroach-v22.1.11.linux-amd64/cockroach /usr/local/bin/ && \
+    rm -rf *
+
 # Install Kafka
 ARG KAFKA_VERSION=2.13-3.3.1
 ADD https://downloads.apache.org/kafka/3.3.1/kafka_$KAFKA_VERSION.tgz .
