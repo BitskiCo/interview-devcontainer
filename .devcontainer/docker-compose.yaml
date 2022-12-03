@@ -1,7 +1,7 @@
 version: "3"
 services:
   cockroach:
-    image: ghcr.io/bitskico/cockroachdb-insecure:v22.1.10
+    image: ghcr.io/bitskico/cockroachdb-insecure:v22.1.11
 
   zookeeper:
     image: ubuntu/zookeeper
@@ -75,6 +75,8 @@ services:
         condition: service_healthy
     environment:
       CARGO_TARGET_DIR: /tmp/cargo-target
+      COCKROACH_INSECURE: "true"
+      COCKROACH_URL: postgres://root@cockroach:26257/defaultdb
       DATABASE_URL: postgres://root@cockroach:26257/defaultdb
       KAFKA_BOOTSTRAP_SERVER: kafka:9092
     volumes:
